@@ -41,6 +41,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.KeyStore;
@@ -72,7 +73,7 @@ public class WsConnectionConfig {
         }
 
         System.setProperty("java.protocol.handler.pkgs", "com.sun.net.ssl.internal.www.protocol");
-        if(CartaCorrecaoUtil.getTipoCertificado(cnpj)!=null && !"A1".equals(CartaCorrecaoUtil.getTipoCertificado(cnpj))) {
+        if (CartaCorrecaoUtil.getTipoCertificado(cnpj) != null && !"A1".equals(CartaCorrecaoUtil.getTipoCertificado(cnpj))) {
             configuraA3(cnpj);
         } else {
             configuraA1(cnpj);
@@ -132,10 +133,22 @@ public class WsConnectionConfig {
          * name = SmartCard
          * library = c:/windows/system32/aetpkss1.dll
          */
-        Provider p = new sun.security.pkcs11.SunPKCS11(System.getProperty("nfe.certificado.token.cfg", "C:\\DBF\\dist\\token.cfg"));
-        Security.addProvider(p);
+//        Provider p = new sun.security.pkcs11.SunPKCS11(System.getProperty("nfe.certificado.token.cfg", "C:\\DBF\\dist\\token.cfg"));
+//        Security.addProvider(p);
+        
+
+        
         KeyStore ks;
         try {
+            String tokenCfg = System.getProperty("nfe.certificado.token.cfg", "C:\\DBF\\dist\\token.cfg");
+            String className = "sun.security.pkcs11.SunPKCS11";
+            Class<?> providerClass = Class.forName(className);
+            if (providerClass == null) {
+                throw new Exception("Nao encontrou a classe " + className + "\nPara conseguir assinar o documento!");
+            }
+            Constructor<?> constructor = providerClass.getConstructor(String.class);
+            Provider p = (Provider) constructor.newInstance(tokenCfg);
+            Security.addProvider(p);
             ks = KeyStore.getInstance("PKCS11");
             System.setProperty("javax.net.ssl.keyStore", "NONE");
             System.setProperty("javax.net.ssl.keyStoreProvider", "SunPKCS11-SmartCard");
@@ -157,13 +170,15 @@ public class WsConnectionConfig {
             Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.SEVERE, "Erro ao obter o cerficiado", ex);
         } catch (UnrecoverableKeyException ex) {
             Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.SEVERE, "Erro ao obter o cerficiado", ex);
+        } catch (Exception ex) {
+            Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.SEVERE, "Erro ao obter o cerficiado", ex);
         }
 
         boolean printProviders = Boolean.parseBoolean(System.getProperty("nfe.wsConnectionConfig.printProviders", "false"));
         if (printProviders) {
             Provider[] providers = Security.getProviders();
-            for (int i = 0; i < providers.length; i++) {
-                providers[i].list(System.out);
+            for (Provider provider : providers) {
+                provider.list(System.out);
             }
         }
     }
