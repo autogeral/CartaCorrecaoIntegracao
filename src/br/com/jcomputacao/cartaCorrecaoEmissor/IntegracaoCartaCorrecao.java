@@ -132,8 +132,8 @@ public class IntegracaoCartaCorrecao extends Servico {
         DetEvento det = new DetEvento();
         det.setDescEvento("Carta de Correcao");
         det.setVersao("1.00");
-        det.setXCondUso(getCondicaoUso());
-        det.setXCorrecao(cartaModel.getCorrecao());
+        det.setXCondUso(StringUtil.htmlIso8859encode(getCondicaoUso()));
+        det.setXCorrecao(StringUtil.htmlIso8859encode(cartaModel.getCorrecao()));
         return det;
     }
 
