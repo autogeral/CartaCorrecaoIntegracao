@@ -96,14 +96,15 @@ public class WsConnectionConfig {
 
         if(!file.exists()) {
             try {
-                String [] hosts = new String[] {"www.portalfiscal.inf.br"};
-                InstallCert.installHostCertificate(false, file, hosts);
-                hosts = new String[] {"www.sefazvirtual.fazenda.gov.br"};
-                InstallCert.installHostCertificate(false, file, hosts);
+                String [] hosts;
+//                String [] hosts = new String[] {"www.portalfiscal.inf.br"};
+//                InstallCert.installHostCertificate(false, file, hosts);
+//                hosts = new String[] {"www.sefazvirtual.fazenda.gov.br"};
+//                InstallCert.installHostCertificate(false, file, hosts);
                 hosts = new String[] {"homologacao.nfe.fazenda.sp.gov.br"};
                 InstallCert.installHostCertificate(false, file, hosts);
-                hosts = new String[] {"www.portalfiscal.inf.br"};
-                InstallCert.installHostCertificate(false, file, hosts);
+//                hosts = new String[] {"www.portalfiscal.inf.br"};
+//                InstallCert.installHostCertificate(false, file, hosts);
                 hosts = new String[] {"homologacao.nfe.fazenda.sp.gov.br"};
                 InstallCert.installHostCertificate(false, file, hosts);
                 hosts = new String[] {"nfe.fazenda.sp.gov.br"};
