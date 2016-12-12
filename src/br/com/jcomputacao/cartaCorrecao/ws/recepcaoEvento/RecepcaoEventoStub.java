@@ -88,7 +88,7 @@ public class RecepcaoEventoStub extends org.apache.axis2.client.Stub {
      */
     public RecepcaoEventoStub(org.apache.axis2.context.ConfigurationContext configurationContext) throws org.apache.axis2.AxisFault {
 
-        this(configurationContext, "https://"+(CartaCorrecaoUtil.getAmbiente()==2?"homologacao.":"")+"nfe.fazenda.sp.gov.br/eventosWEB/services/RecepcaoEvento.asmx");        
+        this(configurationContext, "https://"+(CartaCorrecaoUtil.getAmbiente()==2?"homologacao.":"")+"nfe.fazenda.sp.gov.br/ws/recepcaoevento.asmx");         
 
     }
 
@@ -97,7 +97,7 @@ public class RecepcaoEventoStub extends org.apache.axis2.client.Stub {
      */
     public RecepcaoEventoStub() throws org.apache.axis2.AxisFault {
 
-        this("https://"+(CartaCorrecaoUtil.getAmbiente()==2?"homologacao.":"")+"nfe.fazenda.sp.gov.br/eventosWEB/services/RecepcaoEvento.asmx");
+        this("https://"+(CartaCorrecaoUtil.getAmbiente()==2?"homologacao.":"")+"nfe.fazenda.sp.gov.br/ws/recepcaoevento.asmx");        
 
     }
 
