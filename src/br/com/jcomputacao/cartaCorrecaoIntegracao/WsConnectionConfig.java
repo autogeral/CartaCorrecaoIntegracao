@@ -164,7 +164,7 @@ public class WsConnectionConfig {
             
             //precisa adicionar essas propriedades se o certificado A3 for Certsign
             //e seu administrador de Token foi AWP Identity Manager da Oberthur
-            //Technologies, senão este erro pode ocorrer:
+            //Technologies e estiver Usando Java 8, senão este erro pode ocorrer:
             //InvalidKeyException: RSA key must be at most 0 bits
             //FONTE: http://www.javac.com.br/jc/posts/list/2516-erro-comunicacao-webservice-certificado-oberthur-technologies.page
             boolean certificadoTipoOberthurTechnologiesComJava8 = Boolean.parseBoolean(System.getProperty("certicado.OberthurTechnologies", "false"));
