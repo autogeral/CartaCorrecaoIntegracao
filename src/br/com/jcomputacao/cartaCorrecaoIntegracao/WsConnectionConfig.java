@@ -133,9 +133,14 @@ public class WsConnectionConfig {
          * Funciona para SERASA
          * name = SmartCard
          * library = c:/windows/system32/aetpkss1.dll
+         *
+         *http://www.javac.com.br/jc/posts/list/2516-erro-comunicacao-webservice-certificado-oberthur-technologies.page
+         * Funciona para Certsign (Certificado Oberthur-technologies = novo da Geralcar)
+         * name = SmartCard
+         * library = c:/windows/system32/OcsCryptoki.dll
+         *
+         *Além disso é preciso colocar novas properties 
          */
-//        Provider p = new sun.security.pkcs11.SunPKCS11(System.getProperty("nfe.certificado.token.cfg", "C:\\DBF\\dist\\token.cfg"));
-//        Security.addProvider(p);
         
 
         
@@ -156,6 +161,17 @@ public class WsConnectionConfig {
             String senha = CartaCorrecaoUtil.getSenhaCertificado(cnpj);
             ks.load(null, senha.toCharArray());
             System.setProperty("javax.net.ssl.keyStoreType", "PKCS11");
+            
+            //precisa adicionar essas propriedades se o certificado A3 for Certsign
+            //e seu administrador de Token foi AWP Identity Manager da Oberthur
+            //Technologies, senão este erro pode ocorrer:
+            //InvalidKeyException: RSA key must be at most 0 bits
+            //FONTE: http://www.javac.com.br/jc/posts/list/2516-erro-comunicacao-webservice-certificado-oberthur-technologies.page
+            boolean certificadoTipoOberthurTechnologiesComJava8 = Boolean.parseBoolean(System.getProperty("certicado.OberthurTechnologies", "false"));
+            if (certificadoTipoOberthurTechnologiesComJava8) {
+                System.setProperty("https.protocols", "SSLv3,TLSv1");
+                System.setProperty("jdk.tls.client.protocols", "TLSv1");
+            }
             
             boolean multiplosCertificados = CartaCorrecaoUtil.getMultiploCertificado(cnpj);
             if(multiplosCertificados) {
