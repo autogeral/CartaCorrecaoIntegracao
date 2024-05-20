@@ -220,7 +220,8 @@ public class WsConnectionConfig {
     }
 
     private static void configuraA1(String cnpj) {
-        Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
+        //Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
+//        Security.addProvider(new com.sun.security.sasl.Provider());
         String certpath = CartaCorrecaoUtil.getCaminhoCertificado(cnpj);
         File file = new File(certpath);
 
